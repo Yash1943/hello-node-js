@@ -83,4 +83,4 @@ console.log("Due Later");
 let itemsDueLater = todos.dueLater();
 let formattedItemsDueLater = todos.toDisplayableList(itemsDueLater);
 console.log(formattedItemsDueLater);
-console.log("\n");
+console.log("\n\n");
