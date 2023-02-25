@@ -12,7 +12,7 @@ let homeContent = "";
 let projectContent = "";
 let registrarionContent = "";
 // fs.readFile("home.html",(err, home) => {
-    // console.log(home.toString());
+//     console.log(home.toString());
 // });
 fs.readFile("home.html", (err, home)=>{
     if(err){
