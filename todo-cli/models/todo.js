@@ -16,28 +16,29 @@ module.exports = (sequelize, DataTypes) => {
       console.log("My Todo list \n");
 
       console.log("Overdue");
+  
       console.log(
         (await Todo.overdue())
-          .map((todo) => {
-            return todo.displayableString();
-          })
+          .map((todo) => console.log(todo.displayableString()))
           .join("\n")
       );
       console.log("\n");
 
       console.log("Due Today");
       // FILL IN HERE
+
       console.log(
         (await Todo.dueToday())
-          .map((todo) => todo.displayableString())
+          .map((todo) => console.log(todo.displayableString()))
           .join("\n")
       );
       console.log("\n");
 
       console.log("Due Later");
       console.log(
+        
         (await Todo.dueLater())
-          .map((todo) => todo.displayableString())
+          .map((todo) => console.log(todo.displayableString()))
           .join("\n")
       );
     }
@@ -82,7 +83,8 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     displayableString() {
-      let checkbox = this.completed ? "[x]" : "[ ]";
+      // console.log("Execute");
+      let checkbox = this.completed ? "[x]." : "[ ].";
       return `${this.id}. ${checkbox} ${this.title} ${
         this.dueDate == new Date().toLocaleDateString("en-CA")
           ? ""
