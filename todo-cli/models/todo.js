@@ -1,4 +1,3 @@
-
 // models/todo.js
 "use strict";
 const { Model, Op } = require("sequelize");
@@ -16,29 +15,28 @@ module.exports = (sequelize, DataTypes) => {
       console.log("My Todo list \n");
 
       console.log("Overdue");
-  
       console.log(
         (await Todo.overdue())
-          .map((todo) => console.log(todo.displayableString()))
+          .map((todo) => {
+            return todo.displayableString();
+          })
           .join("\n")
       );
       console.log("\n");
 
       console.log("Due Today");
       // FILL IN HERE
-
       console.log(
         (await Todo.dueToday())
-          .map((todo) => console.log(todo.displayableString()))
+          .map((todo) => todo.displayableString())
           .join("\n")
       );
       console.log("\n");
 
       console.log("Due Later");
       console.log(
-
         (await Todo.dueLater())
-          .map((todo) => console.log(todo.displayableString()))
+          .map((todo) => todo.displayableString())
           .join("\n")
       );
     }
@@ -47,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       // FILL IN HERE TO RETURN OVERDUE ITEMS
       return await Todo.findAll({
         where: {
-          dueDate: { [Op.lt]: new Date().toLocaleDateString("en-CA") },
+          dueDate: { [Op.lt]: new Date().toISOString().slice(0, 10) },
         },
       });
     }
@@ -56,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       // FILL IN HERE TO RETURN ITEMS DUE tODAY
       return await Todo.findAll({
         where: {
-          dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") },
+          dueDate: { [Op.eq]: new Date().toISOString().slice(0, 10) },
         },
       });
     }
@@ -65,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       // FILL IN HERE TO RETURN ITEMS DUE LATER
       return await Todo.findAll({
         where: {
-          dueDate: { [Op.gt]: new Date().toLocaleDateString("en-CA") },
+          dueDate: { [Op.gt]: new Date().toISOString().slice(0, 10) },
         },
       });
     }
@@ -83,10 +81,9 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     displayableString() {
-      // console.log("Execute");
       let checkbox = this.completed ? "[x]" : "[ ]";
       return `${this.id}. ${checkbox} ${this.title} ${
-        this.dueDate == new Date().toLocaleDateString("en-CA")
+        this.dueDate == new Date().toISOString().slice(0, 10)
           ? ""
           : this.dueDate
       }`.trim();
