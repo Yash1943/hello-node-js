@@ -1,6 +1,5 @@
-// models/todo.js
 "use strict";
-const { Model, Op } = require("sequelize");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -8,85 +7,16 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static async addTask(params) {
-      return await Todo.create(params);
-    }
-    static async showList() {
-      console.log("My Todo list \n");
-
-      console.log("Overdue");
-      console.log(
-        (await Todo.overdue())
-          .map((todo) => {
-            return todo.displayableString();
-          })
-          .join("\n")
-      );
-      console.log("\n");
-
-      console.log("Due Today");
-      // FILL IN HERE
-      console.log(
-        (await Todo.dueToday())
-          .map((todo) => todo.displayableString())
-          .join("\n")
-      );
-      console.log("\n");
-
-      console.log("Due Later");
-      console.log(
-        (await Todo.dueLater())
-          .map((todo) => todo.displayableString())
-          .join("\n")
-      );
+    static associate(models) {
+      // define association here
     }
 
-    static async overdue() {
-      // FILL IN HERE TO RETURN OVERDUE ITEMS
-      return await Todo.findAll({
-        where: {
-          dueDate: { [Op.lt]: new Date().toISOString().slice(0, 10) },
-        },
-      });
+    static addTodo({ title, dueDate }) {
+      return this.create({ title: title, dueDate: dueDate, completed: false });
     }
 
-    static async dueToday() {
-      // FILL IN HERE TO RETURN ITEMS DUE tODAY
-      return await Todo.findAll({
-        where: {
-          dueDate: { [Op.eq]: new Date().toISOString().slice(0, 10) },
-        },
-      });
-    }
-
-    static async dueLater() {
-      // FILL IN HERE TO RETURN ITEMS DUE LATER
-      return await Todo.findAll({
-        where: {
-          dueDate: { [Op.gt]: new Date().toISOString().slice(0, 10) },
-        },
-      });
-    }
-
-    static async markAsComplete(id) {
-      // FILL IN HERE TO MARK AN ITEM AS COMPLETE
-      await Todo.update(
-        { completed: true },
-        {
-          where: {
-            id: id,
-          },
-        }
-      );
-    }
-
-    displayableString() {
-      let checkbox = this.completed ? "[x]" : "[ ]";
-      return `${this.id}. ${checkbox} ${this.title} ${
-        this.dueDate == new Date().toISOString().slice(0, 10)
-          ? ""
-          : this.dueDate
-      }`.trim();
+    markAsCompleted() {
+      return this.update({ completed: true });
     }
   }
   Todo.init(
