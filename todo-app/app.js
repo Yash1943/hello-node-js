@@ -1,21 +1,40 @@
+/*create or import javascript related content(imoport the header.ejs content in index.ejs)*/
+//{%> for loop end   this is in index.ejs file
 const express = require("express");
 const app = express();
 const { Todo } = require("./models");
 const bodyParser = require("body-parser");
+const { response } = require("express");
+const path =require("path");
 app.use(bodyParser.json());
 
-app.get("/", function (request, response) {
-  response.send("This is index page");
+app.set("view engine","ejs");     //for rendaring ejs page 
+
+app.get("/", async(request,response) =>{
+  const allTodos =await Todo.getTodos();
+  if( request.accepts("html")){         //accept req browser then show index.ejs file  and pass all todos value 
+    response.render('index', {
+      allTodos
+    });
+  } else{
+    response.json({
+      allTodos
+    })
+  }
+   //fatch the alltodo 
+  // response.render('index');       //fatch the data and point first index.ejs file
 });
+
+app.use(express.static(path.join(__dirname,'public')));   //serve or provide a static file like css and js
 
 app.get("/todos", async function (_request, response) {
   console.log("Processing list of all Todos ...");
-  try {
-    const todolist = await Todo.findAll({order:[["id","ASC"]]});
-    return  response.json(todolist)
-  } catch (error) {
-    return response.status(400).json(error)
-  }
+  // try {
+  //   const todolist = await Todo.findAll({order:[["id","ASC"]]});
+  //   return  response.json(todolist)
+  // } catch (error) {
+  //   return response.status(400).json(error)
+  // }
 });
 
 app.get("/todos/:id", async function (request, response) {

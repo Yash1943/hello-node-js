@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       return this.create({ title: title, dueDate: dueDate, completed: false });
     }
 
+    //create a fun to  show a todo we can create 
+    static getTodos() {
+      return this.findAll();    //it can return all todos store in database
+    }
+
     markAsCompleted() {
       return this.update({ completed: true });
     }
