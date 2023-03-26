@@ -4,30 +4,31 @@ const express = require("express");
 const app = express();
 const { Todo } = require("./models");
 const bodyParser = require("body-parser");
-const { response } = require("express");
-const path =require("path");
+//const { response } = require("express");
+const path = require("path");
 app.use(bodyParser.json());
 
-app.set("view engine","ejs");     //for rendaring ejs page 
+app.set("view engine", "ejs"); //for rendaring ejs page
 
-app.get("/", async(request,response) =>{
-  const allTodos =await Todo.getTodos();
-  if( request.accepts("html")){         //accept req browser then show index.ejs file  and pass all todos value 
-    response.render('index', {
-      allTodos
+app.get("/", async (request, response) => {
+  const allTodos = await Todo.getTodos();
+  if (request.accepts("html")) {
+    //accept req browser then show index.ejs file  and pass all todos value
+    response.render("index", {
+      allTodos,
     });
-  } else{
+  } else {
     response.json({
-      allTodos
-    })
+      allTodos,
+    });
   }
-   //fatch the alltodo 
+  //fatch the alltodo
   // response.render('index');       //fatch the data and point first index.ejs file
 });
 
-app.use(express.static(path.join(__dirname,'public')));   //serve or provide a static file like css and js
+app.use(express.static(path.join(__dirname, "public"))); //serve or provide a static file like css and js
 
-app.get("/todos", async function (_request, response) {
+app.get("/todos", async (request, response) => {
   console.log("Processing list of all Todos ...");
   // try {
   //   const todolist = await Todo.findAll({order:[["id","ASC"]]});
@@ -37,7 +38,7 @@ app.get("/todos", async function (_request, response) {
   // }
 });
 
-app.get("/todos/:id", async function (request, response) {
+app.get("/todos/:id", async (request, response) => {
   try {
     const todo = await Todo.findByPk(request.params.id);
     return response.json(todo);
@@ -47,7 +48,7 @@ app.get("/todos/:id", async function (request, response) {
   }
 });
 
-app.post("/todos", async function (request, response) {
+app.post("/todos", async (request, response) => {
   try {
     const todo = await Todo.addTodo(request.body);
     return response.json(todo);
@@ -57,7 +58,7 @@ app.post("/todos", async function (request, response) {
   }
 });
 
-app.put("/todos/:id/markAsCompleted", async function (request, response) {
+app.put("/todos/:id/markAsCompleted", async (request, response) => {
   const todo = await Todo.findByPk(request.params.id);
   try {
     const updatedTodo = await todo.markAsCompleted();
@@ -68,10 +69,10 @@ app.put("/todos/:id/markAsCompleted", async function (request, response) {
   }
 });
 
-app.delete("/todos/:id", async function (request, response) {
+app.delete("/todos/:id", async (request, response) => {
   console.log("We have to delete a Todo with ID: ", request.params.id);
-  const deleteItem = await Todo.destroy({where:{id:request.params.id}})
-  response.send(deleteItem?true:false)
+  const deleteItem = await Todo.destroy({ where: { id: request.params.id } });
+  response.send(deleteItem ? true : false);
 });
 
 module.exports = app;

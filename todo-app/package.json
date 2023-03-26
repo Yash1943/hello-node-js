@@ -4,11 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -e js,ejs",
-    "db:create:test": "NODE_ENV=test npx sequelize-cli db:create",
-    "pretest": " npx sequelize-cli db:drop && npx sequelize-cli db:create",
-    "test": "jest --detectOpenHandles",
-    "prepare": "cd . && husky install todo-cli/.husky"
+    "start": "node index.js",
+    "start:prod": "node index.js"
   },
   "author": "Yash <joshiyash1942003@gmail.com>",
   "license": "ISC",
