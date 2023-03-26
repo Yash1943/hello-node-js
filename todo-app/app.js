@@ -30,12 +30,12 @@ app.use(express.static(path.join(__dirname, "public"))); //serve or provide a st
 
 app.get("/todos", async (request, response) => {
   console.log("Processing list of all Todos ...");
-  // try {
-  //   const todolist = await Todo.findAll({order:[["id","ASC"]]});
-  //   return  response.json(todolist)
-  // } catch (error) {
-  //   return response.status(400).json(error)
-  // }
+  try {
+    const todolist = await Todo.findAll({order:[["id","ASC"]]});
+    return  response.json(todolist)
+  } catch (error) {
+    return response.status(400).json(error)
+  }
 });
 
 app.get("/todos/:id", async (request, response) => {
