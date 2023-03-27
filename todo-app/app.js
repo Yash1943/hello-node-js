@@ -11,7 +11,9 @@ app.use(bodyParser.json());
 app.set("view engine", "ejs"); //for rendaring ejs page
 
 app.get("/", async (request, response) => {
+  await Todo.addTodo({"Buy Milk","2023-03-30"})
   const allTodos = await Todo.getTodos();
+  // console.log(allTodos)
   if (request.accepts("html")) {
     //accept req browser then show index.ejs file  and pass all todos value
     response.render("index", {
