@@ -17,7 +17,37 @@ module.exports = (sequelize, DataTypes) => {
 
     //create a fun to  show a todo we can create 
     static getTodos() {
-      return this.findAll();    //it can return all todos store in database
+      return this.findAll({order:[["id","ASC"]]})    //it can return all todos store in database
+    }
+    static Overdue(){
+      return this.findAll({
+        where:{
+          dueDate:{
+            [Op.lt]:new Date().toISOString()
+          },
+        },
+        order:[["id","ASC"]]
+      })
+    }
+    static duelater(){
+      return this.findAll({
+        where:{
+          dueDate:{
+            [Op.gt]:new Date().toISOString()
+          },
+        },
+        order:[["id","ASC"]]
+      })
+    }
+    static duetoday(){
+      return this.findAll({
+        where:{
+          dueDate:{
+            [Op.eq]:new Date().toISOString()
+          },
+        },
+        order:[["id","ASC"]]
+      })
     }
 
     markAsCompleted() {
