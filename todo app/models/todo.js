@@ -1,5 +1,6 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model,Op} = require("sequelize");
+// import { Op } from "sequelize";
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -11,13 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
 
-    static addTodo(title, dueDate ) {
+    static addTodo({ title, dueDate }) {
       return this.create({ title: title, dueDate: dueDate, completed: false });
     }
 
-    //create a fun to  show a todo we can create 
-    static getTodos() {
-      return this.findAll({order:[["id","ASC"]]})    //it can return all todos store in database
+    static gettodos(){
+      return this.findAll({order:[["id","ASC"]]});
     }
     static Overdue(){
       return this.findAll({
@@ -49,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
         order:[["id","ASC"]]
       })
     }
-
     markAsCompleted() {
       return this.update({ completed: true });
     }
