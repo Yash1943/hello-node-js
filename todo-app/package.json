@@ -7,8 +7,8 @@
     "start": "node index.js",
     "start:prod": "node index.js",
     "db:create:test": "NODE_ENV=test npx sequelize-cli db:create",
-    "test": "jest --detectOpenHandles",
-    "pretest": " npx sequelize-cli db:drop && npx sequelize-cli db:create"
+    "test": "NODE_ENV=test jest --detectOpenHandles",
+    "pretest": " NODE_ENV=test npx sequelize-cli db:drop && NODE_ENV=test npx sequelize-cli db:create"
   },
   "author": "Yash <joshiyash1942003@gmail.com>",
   "license": "ISC",
