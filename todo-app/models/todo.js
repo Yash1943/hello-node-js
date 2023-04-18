@@ -1,6 +1,5 @@
 "use strict";
 const { Model, Op } = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -11,34 +10,32 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
     static addTodo({ title, dueDate }) {
       return this.create({ title: title, dueDate: dueDate, completed: false });
     }
-    markAsCompleted() {
-      return this.update({ completed: true });
-    }
-    deletetodo() {
-      return this.removetask(id);
-    }
+
     static getTodos() {
       return this.findAll({ order: [["id", "ASC"]] });
     }
-    static overdue() {
+
+    static overDue() {
       return this.findAll({
         where: {
           dueDate: {
-            [Op.lt]: new Date().toLocaleDateString("en-CA"),
+            [Op.lt]: new Date().toISOString(),
           },
           completed: false,
         },
         order: [["id", "ASC"]],
       });
     }
+
     static dueToday() {
       return this.findAll({
         where: {
           dueDate: {
-            [Op.eq]: new Date().toLocaleDateString("en-CA"),
+            [Op.eq]: new Date().toISOString(),
           },
           completed: false,
         },
@@ -49,13 +46,22 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll({
         where: {
           dueDate: {
-            [Op.gt]: new Date().toLocaleDateString("en-CA"),
+            [Op.gt]: new Date().toISOString(),
           },
           completed: false,
         },
         order: [["id", "ASC"]],
       });
     }
+
+    static async remove(id) {
+      return this.destroy({
+        where: {
+          id,
+        },
+      });
+    }
+
     static completedItems() {
       return this.findAll({
         where: {
@@ -64,18 +70,15 @@ module.exports = (sequelize, DataTypes) => {
         order: [["id", "ASC"]],
       });
     }
-    static async remove(id) {
-      return this.destroy({
-        where: {
-          id,
-        },
-      });
-    }
+
     setCompletionStatus(bool) {
       return this.update({ completed: bool });
     }
-  }
 
+    // markAsCompleted() {
+    //   return this.update({ completed: true });
+    // }
+  }
   Todo.init(
     {
       title: DataTypes.STRING,
