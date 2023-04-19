@@ -84,10 +84,14 @@ app.put("/todos/:id", async (req, res) => {
 });
 
 // eslint-disable-next-line no-unused-vars
-app.delete("/todos/:id", async (req, res) => {
-  console.log("We have to delete a Todo with ID: ", req.params.id);
-  const affectedRow = await Todo.destroy({ where: { id: req.params.id } });
-  res.send(affectedRow ? true : false);
+app.delete("/todos/:id", async (request, response) => {
+  console.log("delete a todo with ID:", request.params.id);
+  try {
+    await Todo.remove(request.params.id);
+    return response.json({ success: true });
+  } catch (error) {
+    return response.status(422).json(error);
+  }
 });
 
 module.exports = app;

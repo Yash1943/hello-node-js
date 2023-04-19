@@ -26,11 +26,9 @@
             class="text-gray-600 curser-pointer ml-2 text-sm"
             ><%= data[i].title %></label
           >
-          <a
-            href="#"
-            class="ml-2 hidden trashIcone"
-            onclick="deleteTodo(<%=data[i].id%>)"
-          >
+          <a href="#" class="hidden trash-icon ml-2" onclick="deleteTodo(<%= data[i].id %>)">
+            <ion-icon name="trash-outline"></ion-icon>
+           </a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
