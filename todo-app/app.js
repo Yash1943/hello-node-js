@@ -127,7 +127,7 @@ app.get("/todos", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   const dueToday = await Todo.dueToday(loginUserId);
   const completedItems = await Todo.completedItems(loginUserId);
   if (req.accepts("html")) {
-    res.render("todosPage", {
+    res.render("todo", {
       // allTodos,
       overdue,
       dueLater,
