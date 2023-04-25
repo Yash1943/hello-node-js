@@ -159,7 +159,7 @@ app.post("/todos", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
       completed: false,
       userId: req.user.id,
     });
-    return res.redirect("/todospage");
+    return res.redirect("/todos");
   } catch (error) {
     console.log(error);
     console.log(error.name);
